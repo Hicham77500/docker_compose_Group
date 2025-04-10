@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  backend:
+    image: your_dockerhub_username/backend:latest
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    depends_on:
+      - db
+    networks:
+      - internal
+    restart: always
+    volumes:
+      - backend_data:/data
+
+  frontend:
+    image: your_dockerhub_username/frontend:latest
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - internal
+    restart: always
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=youruser
+      - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=yourdb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    restart: always
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  backend_data:
+  db_data:
