@@ -12,5 +12,5 @@ RUN npm install -g nodemon
 # Copier le reste de l'application
 COPY . .
 
-# Défaut : lancer en production (node index.js)
-CMD ["node", "index.js"]
+# Défaut : lancer en production avec server.js
+CMD ["node", "server.js"]

@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   backend:
     image: your_dockerhub_username/backend:latest
@@ -8,6 +7,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+    env_file:
+      - .env
     depends_on:
       - db
     networks:
@@ -15,7 +16,6 @@ services:
     restart: always
     volumes:
       - backend_data:/data
-
   frontend:
     image: your_dockerhub_username/frontend:latest
     build: ./frontend
@@ -26,7 +26,6 @@ services:
     networks:
       - internal
     restart: always
-
   db:
     image: postgres:13
     environment:
@@ -38,11 +37,9 @@ services:
     networks:
       - internal
     restart: always
-
 networks:
   internal:
     driver: bridge
-
 volumes:
   backend_data:
   db_data:

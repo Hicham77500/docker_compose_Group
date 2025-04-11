@@ -1,28 +1,38 @@
 const express = require('express');
 const cors = require('cors');
+const { Pool } = require('pg');
 const app = express();
 
 app.use(express.json());
-// Middleware pour autoriser le CORS
 app.use(cors());
 
-// ...existing middlewares et configurations...
+// Création du pool avec la variable d'environnement DB_URI
+const pool = new Pool({
+  connectionString: process.env.DB_URI,
+});
 
-// Route GET /api/items avec gestion d'erreur
-app.get('/api/items', (req, res, next) => {
+// Route GET /api/items avec connexion DB
+app.get('/api/items', async (req, res, next) => {
   try {
-    // ...existing code pour récupérer les items...
-    res.json({ items: [] });
+    console.log("DB_URI:", process.env.DB_URI); // vérification de la variable
+    const result = await pool.query('SELECT * FROM items');
+    console.log("Résultat de la requête:", result.rows);
+    res.json({ items: result.rows });
   } catch (err) {
+    console.error("Erreur lors du GET /api/items:", err);
     next(err);
   }
 });
 
-// Route POST /api/items avec gestion d'erreur
-app.post('/api/items', (req, res, next) => {
+// Route POST /api/items pour insérer un item dans la DB
+app.post('/api/items', async (req, res, next) => {
   try {
-    // ...existing code pour créer un item...
-    res.status(201).json({ item: req.body });
+    const { title, description } = req.body;
+    const result = await pool.query(
+      'INSERT INTO items (title, description) VALUES ($1, $2) RETURNING *',
+      [title, description]
+    );
+    res.status(201).json({ item: result.rows[0] });
   } catch (err) {
     next(err);
   }
@@ -35,4 +45,4 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`Serveur démarré sur le port ${PORT}`));
