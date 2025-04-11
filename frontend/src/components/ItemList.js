@@ -6,9 +6,12 @@ function ItemList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newItem, setNewItem] = useState('');
+  const [newDescription, setNewDescription] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/items')
+    const apiUrl = `http://${window.location.hostname}:3000/api/items`;
+    
+    fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
           setItems(data.items || []);
@@ -24,9 +27,30 @@ function ItemList() {
   const handleAddItem = (e) => {
     e.preventDefault();
     if (!newItem.trim()) return;
-    // Ici, vous pouvez également envoyer une requête POST à votre API
-    setItems([...items, newItem.trim()]);
-    setNewItem('');
+    
+    const apiUrl = `http://${window.location.hostname}:3000/api/items`;
+    
+    // Envoi d'une requête POST à l'API
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: newItem.trim(),
+        description: newDescription.trim() || 'Aucune description'
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Ajouter le nouvel item retourné par l'API
+      setItems([...items, data.item]);
+      setNewItem('');
+      setNewDescription('');
+    })
+    .catch(err => {
+      console.error('Erreur lors de l\'ajout:', err);
+    });
   };
 
   return (
@@ -34,9 +58,15 @@ function ItemList() {
         <form onSubmit={handleAddItem} className="item-form">
           <input
               type="text"
-              placeholder="Ajouter un item..."
+              placeholder="Titre de l'item..."
               value={newItem}
               onChange={(e) => setNewItem(e.target.value)}
+          />
+          <input
+              type="text"
+              placeholder="Description (optionnel)"
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
           />
           <button type="submit">Ajouter</button>
         </form>
@@ -48,8 +78,11 @@ function ItemList() {
         ) : (
             <ul className="item-list">
               {items.length > 0 ? (
-                  items.map((item, index) => (
-                      <li key={index} className="item">{item}</li>
+                  items.map((item) => (
+                      <li key={item.id} className="item">
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                      </li>
                   ))
               ) : (
                   <li className="no-item">Aucun item disponible</li>
