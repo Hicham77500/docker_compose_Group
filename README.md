@@ -1,13 +1,53 @@
 # TP-DockerCompose-MiniPlateforme
-Structure du projet pour la mini plateforme utilisant Docker Compose.
 
+Structure du projet pour la mini plateforme utilisant Docker Compose.
 
 ## Instructions pour récupérer et lancer le projet
 
-- Cloner le repository sur votre machine.
-- Vérifier que Docker et Docker Compose sont installés.
-- Lancer l'ensemble des services avec la commande :  
-  `docker-compose up`
+### Option 1 : Utiliser les images pré-construites (rapide)
+
+1. Cloner ce dépôt ou télécharger les fichiers suivants :
+   - `docker-compose.yml`
+   - `.env`
+   - Le dossier `db/docker-entrypoint-initdb.d` avec le script `init.sql`
+
+2. Lancer l'ensemble des services avec la commande :
+   ```bash
+   docker-compose up -d
+   ```
+
+3. Accéder à l'application :
+   - Frontend : http://localhost:8080
+   - API Backend : http://localhost:3000/api/items
+
+### Option 2 : Développement local (avec modification et build des images)
+
+1. Cloner le dépôt complet :
+   ```bash
+   git clone <URL_DU_REPO>
+   cd tp-group-docker-compose
+   ```
+
+2. Lancer en mode développement :
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
+   ```
+
+3. Les modifications du code source dans `frontend/` et `backend/` seront automatiquement prises en compte grâce aux volumes configurés.
+
+## Images Docker
+
+Ce projet utilise les images suivantes disponibles sur Docker Hub :
+- [excalibur404/tp-docker-compose-backend](https://hub.docker.com/r/excalibur404/tp-docker-compose-backend)
+- [excalibur404/tp-docker-compose-frontend](https://hub.docker.com/r/excalibur404/tp-docker-compose-frontend)
+
+## Structure du projet
+
+- `frontend/` : Application React
+- `backend/` : API REST Node.js/Express
+- `db/` : Scripts d'initialisation PostgreSQL
+- `docker-compose.yml` : Configuration principale des services
+- `docker-compose.override.yml` : Configuration spécifique pour le développement
 
 ## Répartition des tâches via Trello
 

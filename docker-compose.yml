@@ -1,6 +1,6 @@
 services:
   backend:
-    image: your_dockerhub_username/backend:latest
+    image: excalibur404/tp-docker-compose-backend:latest
     build: ./backend
     ports:
       - "3000:3000"
@@ -19,7 +19,7 @@ services:
     volumes:
       - backend_data:/data
   frontend:
-    image: your_dockerhub_username/frontend:latest
+    image: excalibur404/tp-docker-compose-frontend:latest
     build: ./frontend
     ports:
       - "8080:80"
