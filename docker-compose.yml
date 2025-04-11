@@ -32,7 +32,7 @@ services:
     environment:
       - POSTGRES_USER=youruser
       - POSTGRES_PASSWORD=yourpassword
-      - POSTGRES_DB=yourdb
+      - POSTGRES_DB=mydb
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
