@@ -1,7 +1,16 @@
 FROM node:14-slim
 WORKDIR /app
+
+# Copier package.json et package-lock.json
 COPY package*.json ./
-RUN npm install --production
+# Installer les dépendances
+RUN npm install
+
+# Installer nodemon globalement (pour le mode dev)
+RUN npm install -g nodemon
+
+# Copier le reste de l'application
 COPY . .
-EXPOSE 3000
-CMD ["node", "server.js"]
+
+# Défaut : lancer en production (node index.js)
+CMD ["node", "index.js"]

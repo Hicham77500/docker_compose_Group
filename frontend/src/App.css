@@ -5,6 +5,23 @@
   padding: 20px;
   color: #333;
 }
+
 h1 {
   text-align: center;
+}
+
+/* Adaptation responsive pour mobile */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .item-form {
+    flex-direction: column;
+  }
+
+  .item-form input,
+  .item-form button {
+    width: 100%;
+  }
 }

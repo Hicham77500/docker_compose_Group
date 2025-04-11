@@ -1,0 +1,7 @@
+.idea/vcs.xml
+.idea/.name
+.idea/docker_compose_Group.iml
+.idea/modules.xml
+.env
+.node_modules
+node_modules/
