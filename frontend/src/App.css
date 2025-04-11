@@ -1,16 +1,23 @@
+:root {
+  --background-gradient-start: #f0f8ff;
+  --background-gradient-end: #e6e6fa;
+  --text-color: #333;
+  --font-family: 'Roboto', sans-serif;
+}
+
 .app-container {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #f0f8ff, #e6e6fa);
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
   min-height: 100vh;
   padding: 20px;
-  color: #333;
+  color: var(--text-color);
 }
 
 h1 {
   text-align: center;
 }
 
-/* Adaptation responsive pour mobile */
+/* Adaptations responsive */
 @media (max-width: 600px) {
   .app-container {
     padding: 10px;

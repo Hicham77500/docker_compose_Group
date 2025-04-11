@@ -10,7 +10,7 @@ function ItemList() {
 
   useEffect(() => {
     const apiUrl = `http://${window.location.hostname}:3000/api/items`;
-    
+
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
@@ -27,10 +27,9 @@ function ItemList() {
   const handleAddItem = (e) => {
     e.preventDefault();
     if (!newItem.trim()) return;
-    
+
     const apiUrl = `http://${window.location.hostname}:3000/api/items`;
-    
-    // Envoi d'une requête POST à l'API
+
     fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -41,16 +40,15 @@ function ItemList() {
         description: newDescription.trim() || 'Aucune description'
       })
     })
-    .then(response => response.json())
-    .then(data => {
-      // Ajouter le nouvel item retourné par l'API
-      setItems([...items, data.item]);
-      setNewItem('');
-      setNewDescription('');
-    })
-    .catch(err => {
-      console.error('Erreur lors de l\'ajout:', err);
-    });
+        .then(response => response.json())
+        .then(data => {
+          setItems([...items, data.item]);
+          setNewItem('');
+          setNewDescription('');
+        })
+        .catch(err => {
+          console.error('Erreur lors de l\'ajout:', err);
+        });
   };
 
   return (
